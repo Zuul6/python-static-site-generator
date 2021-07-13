@@ -1,8 +1,5 @@
-from genericpath import exists, isdir
-from os import mkdir
 from pathlib import Path
 import shutil
-from ssg.parsers import Parser
 
 class Site:
     def __init__(self, source, dest, parsers = None):
