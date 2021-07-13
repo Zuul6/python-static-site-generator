@@ -5,12 +5,10 @@ import shutil
 from ssg.parsers import Parser
 
 class Site:
-    def __init__(self, source, dest, parsers):
+    def __init__(self, source, dest, parsers = None):
         self.source = Path(source)
         self.dest = Path(dest)
-        self.parsers = None
-        # ToDo: In constructor body set new instance variable parsers to expression parsers or []
-        
+        self.parsers = parsers or []        
         
     def create_dir(self, path):
         directory = self.dest / path.relative_to(self.source)
@@ -28,13 +26,13 @@ class Site:
 
     def load_parser(self, extension):
         for parser in self.parsers:
-            if Parser.valid_extension(extension):
+            if parser.valid_extension(extension):
                 return parser
 
     def run_parser(self, path):
-        parser = Site.load_parser(path.suffix)
+        parser = self.load_parser(path.suffix)
 
         if parser is not None:
-            Parser.parse(path, self.source, self.dest)
+            parser.parse(path, self.source, self.dest)
         else:
             print("Not Implemented")
